@@ -1,0 +1,10 @@
+# 1. Ignore the database (it will be created fresh when someone runs your app)
+clinic.db
+
+# 2. Ignore Python cache files (junk files created when you run the app)
+__pycache__/
+*.pyc
+
+# 3. Ignore virtual environments or local settings
+.venv/
+.env

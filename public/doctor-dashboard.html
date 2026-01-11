@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+    <img src="/canvas_logo2.png" width="85px" height="60px">
+    <h2><a href="/home">Clinic</a></h2>
+    <nav>
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/doctors">Doctors</a></li>
+            
+            {% if user %}
+                <!-- If the user is logged in -->
+                {% if user.role == 'doctor' %}
+                    <li><a href="/doctor-dashboard">Dashboard</a></li>
+                    <!-- <li><a href="/profile">My Profile</a></li> -->
+                {% else %}
+                    <li><a href="/my-appointments">Appointments</a></li>
+                    <li><a href="/profile">My Profile</a></li>
+                {% endif %}
+                <li><a href="/logout" style="color: red;">Logout</a></li>
+            {% else %}
+                <!-- If the user is logged out -->
+                <li><a href="/login">Log in</a></li>
+                <li><a href="/register">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+
+<!-- This displays success/error messages at the top of the page -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert {{ category }}">
+    {{ message }}
+</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+    <!-- Include the Header here -->
+    <div class="doctors">
+        <h1>Welcome, {{ user.fullname }}</h1>
+        <h2>Your Scheduled Patients</h2>
+        <div class="categories" style="width: 80%; padding: 20px; margin-top: 20px;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #333;">
+                        <th>Patient Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appt in appointments %}
+                    <tr>
+                        <td style="padding: 10px;">{{ appt.patient.fullname }}</td>
+                        <td>{{ appt.date }}</td>
+                        <td>{{ appt.time }}</td>
+                        <td>
+                            <a href="/patient-history/{{ appt.patient.email }}" class="button" style="padding: 5px 10px; text-decoration: none; font-size: 12px;">View Records</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
